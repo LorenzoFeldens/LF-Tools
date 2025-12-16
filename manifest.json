@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "LF Tools",
+  "version": "1.18.0",
+  "description": "LF Tools",
+  "permissions": [
+    "contextMenus",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
