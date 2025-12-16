@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "LF Tools",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "description": "LF Tools",
   "permissions": [
     "contextMenus",
     "scripting",
-    "activeTab"
+    "activeTab",
+    "clipboardRead"
   ],
   "host_permissions": [
     "<all_urls>"

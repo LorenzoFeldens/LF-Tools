@@ -638,9 +638,33 @@ function openLfToolsPopup(tabId, initialText) {
   });
 }
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (!tab || tab.id === undefined) return;
 
   const selection = (info.selectionText || "").trim();
-  openLfToolsPopup(tab.id, selection);
+  if (selection) {
+    openLfToolsPopup(tab.id, selection);
+    return;
+  }
+
+  // No selection: try to pull clipboard text and use it as initial input.
+  try {
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          return (text || "").trim();
+        } catch (e) {
+          return "";
+        }
+      }
+    });
+
+    const clipboardText = (result || "").trim();
+    openLfToolsPopup(tab.id, clipboardText);
+  } catch (e) {
+    // Fallback: open empty if clipboard read fails (permissions / page restrictions).
+    openLfToolsPopup(tab.id, "");
+  }
 });
